@@ -1,4 +1,4 @@
-import { countLabel, submit } from "./feedback.js";
+import { canSend, countLabel, submit } from "./feedback.js";
 
 const form = document.querySelector("#feedback");
 const message = document.querySelector("#message");
@@ -11,8 +11,15 @@ function setStatus(text, kind = "") {
   status.className = kind;
 }
 
+function updateSendButton() {
+  sendButton.disabled = !canSend(message.value);
+}
+
+updateSendButton();
+
 message.addEventListener("input", () => {
   count.textContent = countLabel(message.value);
+  updateSendButton();
 });
 
 form.addEventListener("submit", async (event) => {
@@ -30,6 +37,6 @@ form.addEventListener("submit", async (event) => {
     count.textContent = countLabel("");
     setStatus("Thanks — we got it.");
   } finally {
-    sendButton.disabled = false;
+    updateSendButton();
   }
 });

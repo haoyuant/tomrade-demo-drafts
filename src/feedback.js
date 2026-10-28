@@ -14,6 +14,11 @@ export function validate(text) {
   return { ok: true, value: trimmed };
 }
 
+// Whether there is anything to send: the Send button stays disabled until this is true.
+export function canSend(text) {
+  return text.trim().length > 0;
+}
+
 // Stands in for a real API call. `transport` is injectable so tests can make it fail.
 export async function send(text, { transport = postFeedback } = {}) {
   return transport(text);

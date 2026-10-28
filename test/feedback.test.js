@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { SEND_ERROR, countLabel, send, submit, validate } from "../src/feedback.js";
+import { SEND_ERROR, canSend, countLabel, send, submit, validate } from "../src/feedback.js";
 
 test("counts characters", () => {
   assert.equal(countLabel(""), "0 characters");
@@ -10,6 +10,16 @@ test("counts characters", () => {
 
 test("rejects empty feedback", () => {
   assert.equal(validate("   ").ok, false);
+});
+
+test("nothing to send while the message is empty or blank", () => {
+  assert.equal(canSend(""), false);
+  assert.equal(canSend("   \n\t "), false);
+});
+
+test("can send once the message has text", () => {
+  assert.equal(canSend("hi"), true);
+  assert.equal(canSend("  hi  "), true);
 });
 
 test("trims feedback", () => {
