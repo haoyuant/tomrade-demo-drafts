@@ -1,0 +1,3 @@
+- Keep decisions in src/feedback.js (pure, no DOM) and DOM code in src/main.js.
+- Every change comes with a node --test test; run npm test before opening a pull request.
+- One ticket, one small pull request. No new dependencies.

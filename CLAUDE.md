@@ -13,6 +13,7 @@ A tiny feedback form used to demo Tomrade: plain HTML, CSS and ES modules. No bu
 - `src/feedback.js` — pure, DOM-free logic: `countLabel`, `validate`, `send` (injectable `transport`) and `submit`, the controller that turns a send into `{ ok, value }` or `{ ok: false, error }`.
 - `src/main.js` — thin DOM wiring: reads the field, calls `submit`, renders the result, toggles the Send button.
 - `src/style.css` — styles. Success text is green (`#2a7a3a`); errors are red via `#status.error`.
+- `.demo/` — scripts that reset this repository and seed Tomrade's demo project. Not part of the app; leave it alone.
 - `test/` — `node --test` tests for `src/feedback.js`; there is no DOM, so inject `send` or `transport` to cover failures.
 
 ## Conventions
