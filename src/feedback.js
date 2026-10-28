@@ -2,6 +2,15 @@
 
 export const SEND_ERROR = "Couldn't send — please try again.";
 
+export function draftSavedLabel(savedAt) {
+  if (savedAt == null) return "";
+  const date = new Date(savedAt);
+  if (Number.isNaN(date.getTime())) return "";
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `Draft saved at ${hours}:${minutes}`;
+}
+
 export function countLabel(text) {
   const n = text.length;
   return `${n} character${n === 1 ? "" : "s"}`;

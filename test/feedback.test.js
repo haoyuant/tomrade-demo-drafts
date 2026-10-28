@@ -1,6 +1,12 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { SEND_ERROR, countLabel, send, submit, validate } from "../src/feedback.js";
+import { SEND_ERROR, countLabel, draftSavedLabel, send, submit, validate } from "../src/feedback.js";
+
+test("formats a draft's saved time or leaves the label empty", () => {
+  assert.equal(draftSavedLabel(new Date(2026, 0, 1, 9, 5).getTime()), "Draft saved at 09:05");
+  assert.equal(draftSavedLabel(null), "");
+  assert.equal(draftSavedLabel("invalid"), "");
+});
 
 test("counts characters", () => {
   assert.equal(countLabel(""), "0 characters");

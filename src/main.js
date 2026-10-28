@@ -1,10 +1,13 @@
-import { countLabel, submit } from "./feedback.js";
+import { countLabel, draftSavedLabel, submit } from "./feedback.js";
 
 const form = document.querySelector("#feedback");
 const message = document.querySelector("#message");
 const count = document.querySelector("#count");
+const draftSaved = document.querySelector("#draft-saved");
 const status = document.querySelector("#status");
 const sendButton = form.querySelector('button[type="submit"]');
+
+draftSaved.textContent = draftSavedLabel(null);
 
 function setStatus(text, kind = "") {
   status.textContent = text;

@@ -1,6 +1,7 @@
 body { font: 16px/1.5 system-ui, sans-serif; background: #faf7f2; color: #222; margin: 0; }
 main { max-width: 560px; margin: 48px auto; padding: 0 16px; }
 textarea { width: 100%; box-sizing: border-box; padding: 12px; font: inherit; border: 1px solid #ccc; border-radius: 8px; }
+#draft-saved { color: #666; font-size: 0.875em; }
 .row { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; color: #666; }
 button { font: inherit; padding: 8px 20px; border: 0; border-radius: 8px; background: #e86b3a; color: #fff; cursor: pointer; }
 button:disabled { opacity: 0.6; cursor: default; }
