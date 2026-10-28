@@ -11,6 +11,7 @@ A tiny feedback form used to demo Tomrade: plain HTML, CSS and ES modules. No bu
 
 - `index.html` — the form. `#status` (`role="status"`) shows success and error messages.
 - `src/feedback.js` — pure, DOM-free logic: `countLabel`, `validate`, `send` (injectable `transport`) and `submit`, the controller that turns a send into `{ ok, value }` or `{ ok: false, error }`.
+- `src/draft.js` — pure, DOM-free draft storage: `saveDraft`, `loadDraft`, `clearDraft` take a Storage-like object, keep `{ text, savedAt }` under `feedback-draft:v1`, and never throw (`loadDraft` returns `null` on any failure).
 - `src/main.js` — thin DOM wiring: reads the field, calls `submit`, renders the result, toggles the Send button.
 - `src/style.css` — styles. Success text is green (`#2a7a3a`); errors are red via `#status.error`.
 - `test/` — `node --test` tests for `src/feedback.js`; there is no DOM, so inject `send` or `transport` to cover failures.
