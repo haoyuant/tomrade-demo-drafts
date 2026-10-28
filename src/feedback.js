@@ -2,15 +2,24 @@
 
 export const SEND_ERROR = "Couldn't send — please try again.";
 
+const segmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+
+// Counts user-perceived characters, so "👍" is 1 rather than 2 UTF-16 units.
+function charCount(text) {
+  let n = 0;
+  for (const _ of segmenter.segment(text)) n++;
+  return n;
+}
+
 export function countLabel(text) {
-  const n = text.length;
+  const n = charCount(text);
   return `${n} character${n === 1 ? "" : "s"}`;
 }
 
 export function validate(text) {
   const trimmed = text.trim();
   if (!trimmed) return { ok: false, error: "Please write something first." };
-  if (trimmed.length > 2000) return { ok: false, error: "Please keep it under 2000 characters." };
+  if (charCount(trimmed) > 2000) return { ok: false, error: "Please keep it under 2000 characters." };
   return { ok: true, value: trimmed };
 }
 

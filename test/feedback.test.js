@@ -60,3 +60,16 @@ test("send fails through an injectable transport", async () => {
     /network down/,
   );
 });
+
+test("counts an emoji as one character", () => {
+  assert.equal(countLabel("👍"), "1 character");
+});
+
+test("counts a skin-toned emoji as one character", () => {
+  assert.equal(countLabel("👍🏽"), "1 character");
+});
+
+test("validate's limit counts user-perceived characters", () => {
+  assert.equal(validate("👍🏽".repeat(2000)).ok, true);
+  assert.equal(validate("👍🏽".repeat(2001)).ok, false);
+});
