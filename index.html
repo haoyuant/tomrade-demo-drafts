@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feedback</title>
+  <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+  <main>
+    <h1>Send us feedback</h1>
+    <form id="feedback">
+      <label for="message">What's on your mind?</label>
+      <textarea id="message" rows="8" placeholder="Write as much as you like…"></textarea>
+      <div class="row">
+        <span id="count">0 characters</span>
+        <button type="submit">Send</button>
+      </div>
+    </form>
+    <p id="status" role="status"></p>
+  </main>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
