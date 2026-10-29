@@ -123,12 +123,13 @@ async function rpc(method, params, { notify = false } = {}) {
 
 async function call(name, input) {
   const result = await rpc("tools/call", { name, arguments: input });
-  const text = result.content?.map((part) => part.text ?? "").join("") ?? "";
-  if (result.isError) throw new Error(`${name}: ${text}`);
+  const parts = result.content?.map((part) => part.text ?? "") ?? [];
+  if (result.isError) throw new Error(`${name}: ${parts.join("\n")}`);
+  // The answer is the first part; Tomrade may add a note (such as a sync line) after it.
   try {
-    return JSON.parse(text);
+    return JSON.parse(parts[0] ?? "");
   } catch {
-    return text;
+    return parts.join("\n");
   }
 }
 
