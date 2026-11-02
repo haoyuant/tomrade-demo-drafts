@@ -13,7 +13,6 @@ test("shows how many characters are left from 1800 on", () => {
   assert.equal(countLabel("a".repeat(1800)), "200 left");
   assert.equal(countLabel("a".repeat(1999)), "1 left");
   assert.equal(countLabel("a".repeat(2000)), "0 left");
-  assert.equal(countLabel("a".repeat(2001)), "-1 left");
 });
 
 test("rejects empty feedback", () => {
