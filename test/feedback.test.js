@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { SEND_ERROR, countLabel, send, submit, validate } from "../src/feedback.js";
+import { SEND_ERROR, countLabel, hasUnsentText, send, submit, validate } from "../src/feedback.js";
 
 test("counts characters", () => {
   assert.equal(countLabel(""), "0 characters");
@@ -59,4 +59,10 @@ test("send fails through an injectable transport", async () => {
     }),
     /network down/,
   );
+});
+
+test("hasUnsentText is true only when there is non-blank text", () => {
+  assert.equal(hasUnsentText(""), false);
+  assert.equal(hasUnsentText("  \n "), false);
+  assert.equal(hasUnsentText("hello"), true);
 });
