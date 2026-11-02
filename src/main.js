@@ -41,6 +41,8 @@ form.addEventListener("submit", async (event) => {
       return;
     }
     message.value = "";
+    persistDraft.cancel();
+    saveDraft("", localStorage);
     count.textContent = countLabel("");
     setStatus("Thanks — we got it.");
   } finally {

@@ -70,10 +70,12 @@ export function saveDraft(text, storage) {
 // Calls fn once `wait` ms after the last call. Timer functions are injectable for tests.
 export function debounce(fn, wait, { setTimer = setTimeout, clearTimer = clearTimeout } = {}) {
   let handle;
-  return (...args) => {
+  const debounced = (...args) => {
     clearTimer(handle);
     handle = setTimer(() => fn(...args), wait);
   };
+  debounced.cancel = () => clearTimer(handle);
+  return debounced;
 }
 
 // Reads the saved draft back. A missing, non-string or unreadable draft gives "".
