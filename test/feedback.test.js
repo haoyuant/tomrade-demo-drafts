@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { SEND_ERROR, countLabel, isSendShortcut, send, submit, validate } from "../src/feedback.js";
+import { SEND_ERROR, countLabel, hasUnsentText, isSendShortcut, send, submit, validate } from "../src/feedback.js";
 
 test("counts characters", () => {
   assert.equal(countLabel(""), "0 characters");
@@ -75,4 +75,10 @@ test("plain Enter and other keys are not the shortcut", () => {
   assert.equal(isSendShortcut({ key: "Enter" }), false);
   assert.equal(isSendShortcut({ key: "Enter", shiftKey: true }, { isMac: true }), false);
   assert.equal(isSendShortcut({ key: "a", ctrlKey: true }), false);
+});
+
+test("hasUnsentText is true only when there is non-blank text", () => {
+  assert.equal(hasUnsentText(""), false);
+  assert.equal(hasUnsentText("  \n "), false);
+  assert.equal(hasUnsentText("hello"), true);
 });
