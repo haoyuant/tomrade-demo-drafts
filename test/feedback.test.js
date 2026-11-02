@@ -141,3 +141,13 @@ test("loadDraft ignores a missing or corrupt draft", () => {
   assert.equal(loadDraft({ getItem: () => 42 }), "");
   assert.equal(loadDraft({ getItem: () => { throw new Error("blocked"); } }), "");
 });
+
+test("debounce.cancel drops the pending call", () => {
+  const timers = [];
+  const setTimer = (fn) => (timers.push({ fn, cleared: false }), timers.length - 1);
+  const clearTimer = (i) => { if (timers[i]) timers[i].cleared = true; };
+  const d = debounce(() => {}, 500, { setTimer, clearTimer });
+  d("a");
+  d.cancel();
+  assert.equal(timers[0].cleared, true);
+});
