@@ -2,8 +2,12 @@
 
 export const SEND_ERROR = "Couldn't send — please try again.";
 
+export const LIMIT = 2000;
+export const WARN_FROM = 1800;
+
 export function countLabel(text) {
   const n = text.length;
+  if (n >= WARN_FROM) return `${Math.max(0, LIMIT - n)} left`;
   return `${n} character${n === 1 ? "" : "s"}`;
 }
 
