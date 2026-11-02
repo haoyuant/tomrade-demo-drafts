@@ -6,3 +6,11 @@ button { font: inherit; padding: 8px 20px; border: 0; border-radius: 8px; backgr
 button:disabled { opacity: 0.6; cursor: default; }
 #status { color: #2a7a3a; }
 #status.error { color: #b3261e; font-weight: 600; }
+
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1816; color: #eee; }
+  textarea { background: #26231f; color: #eee; border-color: #4a453e; }
+  .row { color: #aaa; }
+  #status { color: #6fcf86; }
+  #status.error { color: #ff8a80; }
+}
