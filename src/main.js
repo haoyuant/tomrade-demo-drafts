@@ -11,13 +11,19 @@ function setStatus(text, kind = "") {
   status.className = kind;
 }
 
+function updateSendButton() {
+  sendButton.disabled = !hasUnsentText(message.value);
+}
+
 message.value = loadDraft(localStorage);
 count.textContent = countLabel(message.value);
+updateSendButton();
 
 const persistDraft = debounce(() => saveDraft(message.value, localStorage), DRAFT_DELAY);
 
 message.addEventListener("input", () => {
   count.textContent = countLabel(message.value);
+  updateSendButton();
   persistDraft();
 });
 
@@ -46,7 +52,7 @@ form.addEventListener("submit", async (event) => {
     count.textContent = countLabel("");
     setStatus("Thanks — we got it.");
   } finally {
-    sendButton.disabled = false;
+    updateSendButton();
   }
 });
 
