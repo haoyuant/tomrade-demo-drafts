@@ -131,3 +131,13 @@ test("debounce runs only the last call after the wait", () => {
   timers.filter((t) => !t.cleared).forEach((t) => t.fn());
   assert.deepEqual(calls, ["ab"]);
 });
+
+test("loadDraft returns the saved text", () => {
+  assert.equal(loadDraft({ getItem: (k) => (k === DRAFT_KEY ? "hello" : null) }), "hello");
+});
+
+test("loadDraft ignores a missing or corrupt draft", () => {
+  assert.equal(loadDraft({ getItem: () => null }), "");
+  assert.equal(loadDraft({ getItem: () => 42 }), "");
+  assert.equal(loadDraft({ getItem: () => { throw new Error("blocked"); } }), "");
+});

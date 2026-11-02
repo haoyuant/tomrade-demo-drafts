@@ -75,3 +75,13 @@ export function debounce(fn, wait, { setTimer = setTimeout, clearTimer = clearTi
     handle = setTimer(() => fn(...args), wait);
   };
 }
+
+// Reads the saved draft back. A missing, non-string or unreadable draft gives "".
+export function loadDraft(storage) {
+  try {
+    const text = storage.getItem(DRAFT_KEY);
+    return typeof text === "string" ? text : "";
+  } catch {
+    return "";
+  }
+}
