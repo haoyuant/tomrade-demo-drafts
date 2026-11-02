@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { SEND_ERROR, countLabel, hasUnsentText, isSendShortcut, send, submit, validate } from "../src/feedback.js";
+import { DRAFT_KEY, SEND_ERROR, debounce, saveDraft, countLabel, hasUnsentText, isSendShortcut, send, submit, validate } from "../src/feedback.js";
 
 test("counts characters", () => {
   assert.equal(countLabel(""), "0 characters");
@@ -89,4 +89,45 @@ test("hasUnsentText is true only when there is non-blank text", () => {
   assert.equal(hasUnsentText(""), false);
   assert.equal(hasUnsentText("  \n "), false);
   assert.equal(hasUnsentText("hello"), true);
+});
+
+function fakeStorage() {
+  const data = new Map();
+  return {
+    data,
+    setItem: (k, v) => data.set(k, v),
+    removeItem: (k) => data.delete(k),
+  };
+}
+
+test("saveDraft stores the text", () => {
+  const storage = fakeStorage();
+  assert.equal(saveDraft("hello", storage), true);
+  assert.equal(storage.data.get(DRAFT_KEY), "hello");
+});
+
+test("saveDraft removes the draft when the box is empty", () => {
+  const storage = fakeStorage();
+  saveDraft("hello", storage);
+  saveDraft("", storage);
+  assert.equal(storage.data.has(DRAFT_KEY), false);
+});
+
+test("saveDraft survives a failing storage", () => {
+  const storage = { setItem() { throw new Error("full"); }, removeItem() {} };
+  assert.equal(saveDraft("hello", storage), false);
+});
+
+test("debounce runs only the last call after the wait", () => {
+  const timers = [];
+  const setTimer = (fn, ms) => (timers.push({ fn, ms, cleared: false }), timers.length - 1);
+  const clearTimer = (i) => { if (timers[i]) timers[i].cleared = true; };
+  const calls = [];
+  const d = debounce((x) => calls.push(x), 500, { setTimer, clearTimer });
+  d("a");
+  d("ab");
+  assert.equal(timers[0].cleared, true);
+  assert.equal(timers[1].ms, 500);
+  timers.filter((t) => !t.cleared).forEach((t) => t.fn());
+  assert.deepEqual(calls, ["ab"]);
 });
