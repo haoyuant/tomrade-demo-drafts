@@ -42,3 +42,8 @@ export function isSendShortcut(event, { isMac = false } = {}) {
   if (event.key !== "Enter" || event.altKey || event.shiftKey) return false;
   return isMac ? !!event.metaKey && !event.ctrlKey : !!event.ctrlKey && !event.metaKey;
 }
+
+// Is there text in the box that hasn't been sent? Whitespace alone doesn't count.
+export function hasUnsentText(text) {
+  return text.trim().length > 0;
+}

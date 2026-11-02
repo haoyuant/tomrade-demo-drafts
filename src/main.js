@@ -1,4 +1,4 @@
-import { countLabel, isSendShortcut, submit } from "./feedback.js";
+import { countLabel, hasUnsentText, isSendShortcut, submit } from "./feedback.js";
 
 const form = document.querySelector("#feedback");
 const message = document.querySelector("#message");
@@ -40,4 +40,10 @@ form.addEventListener("submit", async (event) => {
   } finally {
     sendButton.disabled = false;
   }
+});
+
+window.addEventListener("beforeunload", (event) => {
+  if (!hasUnsentText(message.value)) return;
+  event.preventDefault();
+  event.returnValue = "";
 });
