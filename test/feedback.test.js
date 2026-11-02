@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { DRAFT_KEY, SEND_ERROR, debounce, saveDraft, countLabel, hasUnsentText, isSendShortcut, send, submit, validate } from "../src/feedback.js";
+import { DRAFT_KEY, SEND_ERROR, debounce, saveDraft, loadDraft, countLabel, hasUnsentText, isSendShortcut, send, submit, validate } from "../src/feedback.js";
 
 test("counts characters", () => {
   assert.equal(countLabel(""), "0 characters");
