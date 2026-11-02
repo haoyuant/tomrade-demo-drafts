@@ -1,4 +1,4 @@
-import { countLabel, hasUnsentText, isSendShortcut, submit } from "./feedback.js";
+import { DRAFT_DELAY, countLabel, debounce, hasUnsentText, isSendShortcut, saveDraft, submit } from "./feedback.js";
 
 const form = document.querySelector("#feedback");
 const message = document.querySelector("#message");
@@ -11,8 +11,11 @@ function setStatus(text, kind = "") {
   status.className = kind;
 }
 
+const persistDraft = debounce(() => saveDraft(message.value, localStorage), DRAFT_DELAY);
+
 message.addEventListener("input", () => {
   count.textContent = countLabel(message.value);
+  persistDraft();
 });
 
 const isMac = /Mac|iPhone|iPad/.test(navigator.platform);

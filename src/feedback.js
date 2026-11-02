@@ -51,3 +51,27 @@ export function isSendShortcut(event, { isMac = false } = {}) {
 export function hasUnsentText(text) {
   return text.trim().length > 0;
 }
+
+export const DRAFT_KEY = "feedback-draft";
+export const DRAFT_DELAY = 500;
+
+// Stores the draft; an empty box removes it. `storage` is injectable (localStorage-shaped).
+// Never throws: storage can be full or blocked.
+export function saveDraft(text, storage) {
+  try {
+    if (text === "") storage.removeItem(DRAFT_KEY);
+    else storage.setItem(DRAFT_KEY, text);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// Calls fn once `wait` ms after the last call. Timer functions are injectable for tests.
+export function debounce(fn, wait, { setTimer = setTimeout, clearTimer = clearTimeout } = {}) {
+  let handle;
+  return (...args) => {
+    clearTimer(handle);
+    handle = setTimer(() => fn(...args), wait);
+  };
+}
