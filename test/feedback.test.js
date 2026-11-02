@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { SEND_ERROR, countLabel, send, submit, validate } from "../src/feedback.js";
+import { SEND_ERROR, countLabel, isSendShortcut, send, submit, validate } from "../src/feedback.js";
 
 test("counts characters", () => {
   assert.equal(countLabel(""), "0 characters");
@@ -59,4 +59,31 @@ test("send fails through an injectable transport", async () => {
     }),
     /network down/,
   );
+});
+
+const key = (overrides) => ({
+  key: "Enter",
+  metaKey: false,
+  ctrlKey: false,
+  altKey: false,
+  shiftKey: false,
+  isComposing: false,
+  ...overrides,
+});
+
+test("⌘+Enter sends on macOS, Ctrl+Enter elsewhere", () => {
+  assert.equal(isSendShortcut(key({ metaKey: true }), { mac: true }), true);
+  assert.equal(isSendShortcut(key({ ctrlKey: true }), { mac: false }), true);
+  assert.equal(isSendShortcut(key({ ctrlKey: true }), { mac: true }), false);
+  assert.equal(isSendShortcut(key({ metaKey: true }), { mac: false }), false);
+});
+
+test("plain Enter and other combinations are not a send shortcut", () => {
+  assert.equal(isSendShortcut(key({}), { mac: true }), false);
+  assert.equal(isSendShortcut(key({}), { mac: false }), false);
+  assert.equal(isSendShortcut(key({ shiftKey: true }), { mac: false }), false);
+  assert.equal(isSendShortcut(key({ ctrlKey: true, shiftKey: true }), { mac: false }), false);
+  assert.equal(isSendShortcut(key({ metaKey: true, altKey: true }), { mac: true }), false);
+  assert.equal(isSendShortcut(key({ key: "a", ctrlKey: true }), { mac: false }), false);
+  assert.equal(isSendShortcut(key({ metaKey: true, isComposing: true }), { mac: true }), false);
 });

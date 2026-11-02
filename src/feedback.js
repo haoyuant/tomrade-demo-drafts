@@ -14,6 +14,14 @@ export function validate(text) {
   return { ok: true, value: trimmed };
 }
 
+// Is this key event the "send" shortcut? ⌘+Enter on macOS, Ctrl+Enter elsewhere.
+// Plain Enter (and any other combination) is left alone so the textarea adds a new line.
+export function isSendShortcut(event, { mac = false } = {}) {
+  if (event.key !== "Enter" || event.isComposing) return false;
+  if (event.altKey || event.shiftKey) return false;
+  return mac ? event.metaKey && !event.ctrlKey : event.ctrlKey && !event.metaKey;
+}
+
 // Stands in for a real API call. `transport` is injectable so tests can make it fail.
 export async function send(text, { transport = postFeedback } = {}) {
   return transport(text);
