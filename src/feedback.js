@@ -7,6 +7,11 @@ export function countLabel(text) {
   return `${n} character${n === 1 ? "" : "s"}`;
 }
 
+// True when the box holds text worth warning about before the tab closes.
+export function hasUnsentText(text) {
+  return text.trim().length > 0;
+}
+
 export function validate(text) {
   const trimmed = text.trim();
   if (!trimmed) return { ok: false, error: "Please write something first." };
