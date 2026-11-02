@@ -1,4 +1,4 @@
-import { DRAFT_DELAY, countLabel, debounce, hasUnsentText, isSendShortcut, saveDraft, submit } from "./feedback.js";
+import { DRAFT_DELAY, countLabel, debounce, hasUnsentText, isSendShortcut, loadDraft, saveDraft, submit } from "./feedback.js";
 
 const form = document.querySelector("#feedback");
 const message = document.querySelector("#message");
@@ -10,6 +10,9 @@ function setStatus(text, kind = "") {
   status.textContent = text;
   status.className = kind;
 }
+
+message.value = loadDraft(localStorage);
+count.textContent = countLabel(message.value);
 
 const persistDraft = debounce(() => saveDraft(message.value, localStorage), DRAFT_DELAY);
 

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { DRAFT_KEY, SEND_ERROR, debounce, saveDraft, countLabel, hasUnsentText, isSendShortcut, send, submit, validate } from "../src/feedback.js";
+import { DRAFT_KEY, SEND_ERROR, debounce, saveDraft, loadDraft, countLabel, hasUnsentText, isSendShortcut, send, submit, validate } from "../src/feedback.js";
 
 test("counts characters", () => {
   assert.equal(countLabel(""), "0 characters");
@@ -130,4 +130,14 @@ test("debounce runs only the last call after the wait", () => {
   assert.equal(timers[1].ms, 500);
   timers.filter((t) => !t.cleared).forEach((t) => t.fn());
   assert.deepEqual(calls, ["ab"]);
+});
+
+test("loadDraft returns the saved text", () => {
+  assert.equal(loadDraft({ getItem: (k) => (k === DRAFT_KEY ? "hello" : null) }), "hello");
+});
+
+test("loadDraft ignores a missing or corrupt draft", () => {
+  assert.equal(loadDraft({ getItem: () => null }), "");
+  assert.equal(loadDraft({ getItem: () => 42 }), "");
+  assert.equal(loadDraft({ getItem: () => { throw new Error("blocked"); } }), "");
 });
