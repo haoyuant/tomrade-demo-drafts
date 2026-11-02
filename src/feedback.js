@@ -2,8 +2,12 @@
 
 export const SEND_ERROR = "Couldn't send — please try again.";
 
+const segmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+
 export function countLabel(text) {
-  const n = text.length;
+  // Count user-perceived characters (grapheme clusters), not UTF-16 code units.
+  let n = 0;
+  for (const _ of segmenter.segment(text)) n++;
   return `${n} character${n === 1 ? "" : "s"}`;
 }
 

@@ -8,6 +8,19 @@ test("counts characters", () => {
   assert.equal(countLabel("hello"), "5 characters");
 });
 
+test("counts emoji as one character", () => {
+  assert.equal(countLabel("👍"), "1 character");
+  assert.equal(countLabel("👍🏽"), "1 character");
+  assert.equal(countLabel("👨‍👩‍👧"), "1 character");
+  assert.equal(countLabel("hi 👍"), "4 characters");
+});
+
+test("counts accented letters as one character", () => {
+  assert.equal(countLabel("é"), "1 character");
+  assert.equal(countLabel("é"), "1 character"); // decomposed e + combining acute
+  assert.equal(countLabel("café"), "4 characters");
+});
+
 test("rejects empty feedback", () => {
   assert.equal(validate("   ").ok, false);
 });
