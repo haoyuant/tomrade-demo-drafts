@@ -8,6 +8,15 @@ test("counts characters", () => {
   assert.equal(countLabel("hello"), "5 characters");
 });
 
+test("counts emoji and accented letters as what a person sees", () => {
+  assert.equal(countLabel("👍"), "1 character");
+  assert.equal(countLabel("👍🏽"), "1 character");
+  assert.equal(countLabel("👨‍👩‍👧"), "1 character");
+  assert.equal(countLabel("e\u0301"), "1 character");
+  assert.equal(countLabel("café"), "4 characters");
+  assert.equal(countLabel("👍".repeat(1800)), "200 left");
+});
+
 test("shows characters left from 1800 on", () => {
   assert.equal(countLabel("a".repeat(1799)), "1799 characters");
   assert.equal(countLabel("a".repeat(1800)), "200 left");

@@ -5,8 +5,17 @@ export const SEND_ERROR = "Couldn't send — please try again.";
 export const LIMIT = 2000;
 export const WARN_FROM = 1800;
 
+const segmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+
+// Counts what a person sees (grapheme clusters), not UTF-16 code units.
+function charCount(text) {
+  let n = 0;
+  for (const _ of segmenter.segment(text)) n += 1;
+  return n;
+}
+
 export function countLabel(text) {
-  const n = text.length;
+  const n = charCount(text);
   if (n >= WARN_FROM) return `${Math.max(0, LIMIT - n)} left`;
   return `${n} character${n === 1 ? "" : "s"}`;
 }
