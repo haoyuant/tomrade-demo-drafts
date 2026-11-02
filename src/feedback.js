@@ -7,6 +7,11 @@ export function countLabel(text) {
   return `${n} character${n === 1 ? "" : "s"}`;
 }
 
+// True when the box holds text that hasn't been sent (whitespace alone doesn't count).
+export function hasUnsentText(text) {
+  return text.trim().length > 0;
+}
+
 export function validate(text) {
   const trimmed = text.trim();
   if (!trimmed) return { ok: false, error: "Please write something first." };

@@ -1,4 +1,4 @@
-import { countLabel, submit } from "./feedback.js";
+import { countLabel, hasUnsentText, submit } from "./feedback.js";
 
 const form = document.querySelector("#feedback");
 const message = document.querySelector("#message");
@@ -13,6 +13,12 @@ function setStatus(text, kind = "") {
 
 message.addEventListener("input", () => {
   count.textContent = countLabel(message.value);
+});
+
+window.addEventListener("beforeunload", (event) => {
+  if (!hasUnsentText(message.value)) return;
+  event.preventDefault();
+  event.returnValue = "";
 });
 
 form.addEventListener("submit", async (event) => {
