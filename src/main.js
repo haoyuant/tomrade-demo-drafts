@@ -11,8 +11,17 @@ function setStatus(text, kind = "") {
   status.className = kind;
 }
 
+let sending = false;
+
+function updateSendButton() {
+  sendButton.disabled = sending || !hasUnsentText(message.value);
+}
+
+updateSendButton();
+
 message.addEventListener("input", () => {
   count.textContent = countLabel(message.value);
+  updateSendButton();
 });
 
 const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
@@ -27,7 +36,8 @@ form.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (sendButton.disabled) return;
 
-  sendButton.disabled = true;
+  sending = true;
+  updateSendButton();
   try {
     const result = await submit(message.value);
     if (!result.ok) {
@@ -38,7 +48,8 @@ form.addEventListener("submit", async (event) => {
     count.textContent = countLabel("");
     setStatus("Thanks — we got it.");
   } finally {
-    sendButton.disabled = false;
+    sending = false;
+    updateSendButton();
   }
 });
 
