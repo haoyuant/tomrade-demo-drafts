@@ -36,3 +36,9 @@ export async function submit(text, { send: sendFn = send } = {}) {
     return { ok: false, error: SEND_ERROR };
   }
 }
+
+// Is this key event the send shortcut? ⌘+Enter on macOS, Ctrl+Enter elsewhere.
+export function isSendShortcut(event, { isMac = false } = {}) {
+  if (event.key !== "Enter" || event.altKey || event.shiftKey) return false;
+  return isMac ? !!event.metaKey && !event.ctrlKey : !!event.ctrlKey && !event.metaKey;
+}

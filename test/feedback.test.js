@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { SEND_ERROR, countLabel, send, submit, validate } from "../src/feedback.js";
+import { SEND_ERROR, countLabel, isSendShortcut, send, submit, validate } from "../src/feedback.js";
 
 test("counts characters", () => {
   assert.equal(countLabel(""), "0 characters");
@@ -59,4 +59,20 @@ test("send fails through an injectable transport", async () => {
     }),
     /network down/,
   );
+});
+
+test("⌘+Enter sends on macOS, not Ctrl+Enter", () => {
+  assert.equal(isSendShortcut({ key: "Enter", metaKey: true }, { isMac: true }), true);
+  assert.equal(isSendShortcut({ key: "Enter", ctrlKey: true }, { isMac: true }), false);
+});
+
+test("Ctrl+Enter sends elsewhere, not ⌘+Enter", () => {
+  assert.equal(isSendShortcut({ key: "Enter", ctrlKey: true }), true);
+  assert.equal(isSendShortcut({ key: "Enter", metaKey: true }), false);
+});
+
+test("plain Enter and other keys are not the shortcut", () => {
+  assert.equal(isSendShortcut({ key: "Enter" }), false);
+  assert.equal(isSendShortcut({ key: "Enter", shiftKey: true }, { isMac: true }), false);
+  assert.equal(isSendShortcut({ key: "a", ctrlKey: true }), false);
 });

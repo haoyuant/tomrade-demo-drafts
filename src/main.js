@@ -1,4 +1,4 @@
-import { countLabel, submit } from "./feedback.js";
+import { countLabel, isSendShortcut, submit } from "./feedback.js";
 
 const form = document.querySelector("#feedback");
 const message = document.querySelector("#message");
@@ -13,6 +13,14 @@ function setStatus(text, kind = "") {
 
 message.addEventListener("input", () => {
   count.textContent = countLabel(message.value);
+});
+
+const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
+
+message.addEventListener("keydown", (event) => {
+  if (!isSendShortcut(event, { isMac })) return;
+  event.preventDefault();
+  form.requestSubmit();
 });
 
 form.addEventListener("submit", async (event) => {
