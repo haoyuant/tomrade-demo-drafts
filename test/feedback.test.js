@@ -60,3 +60,15 @@ test("send fails through an injectable transport", async () => {
     /network down/,
   );
 });
+
+test("countLabel counts an emoji as one character", () => {
+  assert.equal(countLabel("👍"), "1 character");
+  assert.equal(countLabel("👍🏽"), "1 character");
+  assert.equal(countLabel("hi 👍"), "4 characters");
+});
+
+test("countLabel counts accented letters as one character", () => {
+  assert.equal(countLabel("é"), "1 character");
+  assert.equal(countLabel("é"), "1 character"); // combining accent
+  assert.equal(countLabel("café"), "4 characters");
+});
