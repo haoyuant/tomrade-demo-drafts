@@ -4,6 +4,7 @@ const form = document.querySelector("#feedback");
 const message = document.querySelector("#message");
 const count = document.querySelector("#count");
 const status = document.querySelector("#status");
+const draftNote = document.querySelector("#draft-note");
 const sendButton = form.querySelector('button[type="submit"]');
 
 function setStatus(text, kind = "") {
@@ -11,10 +12,14 @@ function setStatus(text, kind = "") {
   status.className = kind;
 }
 
-const persistDraft = debounce(() => saveDraft(message.value, localStorage), DRAFT_DELAY);
+const persistDraft = debounce(() => {
+  const saved = saveDraft(message.value, localStorage);
+  draftNote.hidden = !(saved && message.value !== "");
+}, DRAFT_DELAY);
 
 message.addEventListener("input", () => {
   count.textContent = countLabel(message.value);
+  draftNote.hidden = true;
   persistDraft();
 });
 
@@ -39,6 +44,7 @@ form.addEventListener("submit", async (event) => {
     }
     message.value = "";
     count.textContent = countLabel("");
+    draftNote.hidden = true;
     setStatus("Thanks — we got it.");
   } finally {
     sendButton.disabled = false;

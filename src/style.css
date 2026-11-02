@@ -4,6 +4,7 @@ textarea { width: 100%; box-sizing: border-box; padding: 12px; font: inherit; bo
 .row { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; color: #666; }
 button { font: inherit; padding: 8px 20px; border: 0; border-radius: 8px; background: #e86b3a; color: #fff; cursor: pointer; }
 button:disabled { opacity: 0.6; cursor: default; }
+#draft-note { margin: 4px 0 0; font-size: 0.85rem; color: #888; }
 #status { color: #2a7a3a; }
 #status.error { color: #b3261e; font-weight: 600; }
 
@@ -12,6 +13,7 @@ button:disabled { opacity: 0.6; cursor: default; }
   body { background: #1b1a18; color: #ece8e1; }
   textarea { background: #262522; color: #ece8e1; border-color: #55524c; }
   .row { color: #b5b0a7; }
+  #draft-note { color: #9a958c; }
   #status { color: #6fcf86; }
   #status.error { color: #ff8a80; }
 }
