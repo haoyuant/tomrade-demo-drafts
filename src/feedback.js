@@ -1,9 +1,12 @@
 // Pure helpers, kept free of the DOM so they can be tested with node --test.
 
 export const SEND_ERROR = "Couldn't send — please try again.";
+const LIMIT = 2000;
+const NEAR_LIMIT = 1800;
 
 export function countLabel(text) {
   const n = text.length;
+  if (n >= NEAR_LIMIT) return `${LIMIT - n} left`;
   return `${n} character${n === 1 ? "" : "s"}`;
 }
 
